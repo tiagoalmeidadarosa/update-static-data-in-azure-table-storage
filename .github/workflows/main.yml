@@ -1,0 +1,18 @@
+name: Upload To Azure Table Storage
+on:
+  push:
+    branches:
+      - main
+      
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: tiagoalmeidadarosa/update-static-data-in-azure-table-storage@v1.0.0
+        with:
+          table_name: "locationstest"
+          connection_string: ${{ secrets.AzureStorageConnectionString }}
