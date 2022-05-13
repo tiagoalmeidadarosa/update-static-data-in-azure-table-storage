@@ -19,4 +19,4 @@ jobs:
         with:
           table_name: "locationstest"
           connection_string: ${{ secrets.AzureStorageConnectionString }}
-          csv_file_path: ${{ env.WORKING_DIR }}/locations2.csv
+          csv_file_path: ${{ env.WORKING_DIR }}/locations.csv
