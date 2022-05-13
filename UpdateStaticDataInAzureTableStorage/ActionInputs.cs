@@ -11,4 +11,9 @@ public class ActionInputs
     Required = true,
     HelpText = "The connection string for the storage account.")]
     public string ConnectionString { get; set; } = null!;
+
+    [Option('p', "path_csv_file",
+    Required = true,
+    HelpText = "The csv file path for import.")]
+    public string PathCsvFile { get; set; } = null!;
 }

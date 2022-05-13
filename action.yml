@@ -4,28 +4,15 @@ branding:
   icon: upload
   color: blue
 inputs:
-  owner:
-    description: 'The owner of the repo. Assign from github.repository_owner. Example, "dotnet".'
-    required: true
-  name:
-    description: 'The repository name. Example, "samples".'
-    required: true
-  branch:
-    description: 'The branch name. Assign from github.ref. Example, "refs/heads/main".'
-    required: true
-  dir:
-    description: 'The root directory to work from. Example, "path/to/code".'
-    required: true
-  workspace:
-    description: 'The workspace directory.'
-    required: false
-    default: '/github/workspace'
   table_name:
     description: "The name of the table to insert into."
     required: true
   connection_string:
     description: "The connection string for the storage account."
-    required: false
+    required: true
+  path_csv_file:
+    description: "The csv file path for import."
+    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -34,3 +21,5 @@ runs:
   - ${{ inputs.table_name }}
   - '-c'
   - ${{ inputs.connection_string }}
+  - '-p'
+  - ${{ inputs.path_csv_file }}

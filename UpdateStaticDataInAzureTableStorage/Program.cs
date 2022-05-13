@@ -26,14 +26,13 @@ await host.RunAsync();
 
 static async Task StartAnalysisAsync(ActionInputs inputs, IHost host)
 {
-    var cloudStorageAccount = CloudStorageAccount.Parse(
-        inputs.ConnectionString);
+    var cloudStorageAccount = CloudStorageAccount.Parse(inputs.ConnectionString);
 
     var tableClient = cloudStorageAccount.CreateCloudTableClient();
     var table = tableClient.GetTableReference(inputs.TableName); //"locationstest"
     await table.CreateIfNotExistsAsync();
 
-    using (var reader = new StreamReader(@"locations.csv"))
+    using (var reader = new StreamReader(inputs.PathCsvFile))
     using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
     {
         MissingFieldFound = null,
