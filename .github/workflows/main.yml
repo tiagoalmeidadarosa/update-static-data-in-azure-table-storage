@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  WORKING_DIR: ./UpdateStaticDataInAzureTableStorage/locations.csv
+  WORKING_DIR: ./UpdateStaticDataInAzureTableStorage
   
 jobs:
   upload:
@@ -19,4 +19,4 @@ jobs:
         with:
           table_name: "locationstest"
           connection_string: ${{ secrets.AzureStorageConnectionString }}
-          csv_file_path: ${{ env.WORKING_DIR }}
+          csv_file_path: ${{ env.WORKING_DIR }}/locations.csv
