@@ -32,7 +32,7 @@ static async Task StartAnalysisAsync(ActionInputs inputs, IHost host)
     var table = tableClient.GetTableReference(inputs.TableName); //"locationstest"
     await table.CreateIfNotExistsAsync();
 
-    using (var reader = new StreamReader(inputs.PathCsvFile))
+    using (var reader = new StreamReader(inputs.CsvFilePath))
     using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
     {
         MissingFieldFound = null,

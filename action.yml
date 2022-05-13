@@ -10,7 +10,7 @@ inputs:
   connection_string:
     description: "The connection string for the storage account."
     required: true
-  path_csv_file:
+  csv_file_path:
     description: "The csv file path for import."
     required: true
 runs:
@@ -22,4 +22,4 @@ runs:
   - '-c'
   - ${{ inputs.connection_string }}
   - '-p'
-  - ${{ inputs.path_csv_file }}
+  - ${{ inputs.csv_file_path }}
