@@ -6,6 +6,9 @@ on:
       
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+env:
+  WORKING_DIR: ./UpdateStaticDataInAzureTableStorage/locations.csv
   
 jobs:
   upload:
@@ -16,3 +19,4 @@ jobs:
         with:
           table_name: "locationstest"
           connection_string: ${{ secrets.AzureStorageConnectionString }}
+          csv_file_path: ${{ env.WORKING_DIR }}
