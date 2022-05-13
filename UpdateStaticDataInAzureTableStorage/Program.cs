@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-using IHost host = Host.CreateDefaultBuilder(args)
+﻿using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) => services.AddGitHubActionServices())
     .Build();
 
@@ -67,7 +65,6 @@ static async Task StartAnalysisAsync(ActionInputs inputs, IHost host)
                 foreach (var row in rows)
                 {
                     batchOperation.Add(TableOperation.InsertOrMerge(row));
-                    var obj = JsonConvert.SerializeObject(row);
                 }
 
                 await table.ExecuteBatchAsync(batchOperation);
