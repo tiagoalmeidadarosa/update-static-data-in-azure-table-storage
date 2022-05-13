@@ -1,0 +1,46 @@
+name: 'Update Static Data In Azure Table Storage'
+description: 'A Github action that includes data in a azure table storage from a csv file'
+branding:
+  icon: upload
+  color: blue
+inputs:
+  owner:
+    description: 'The owner of the repo. Assign from github.repository_owner. Example, "dotnet".'
+    required: true
+  name:
+    description: 'The repository name. Example, "samples".'
+    required: true
+  branch:
+    description: 'The branch name. Assign from github.ref. Example, "refs/heads/main".'
+    required: true
+  dir:
+    description: 'The root directory to work from. Example, "path/to/code".'
+    required: true
+  workspace:
+    description: 'The workspace directory.'
+    required: false
+    default: '/github/workspace'
+  table_name:
+    description: "The name of the table to insert into."
+    required: true
+  connection_string:
+    description: "The connection string for the storage account."
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+  - '-o'
+  - ${{ inputs.owner }}
+  - '-n'
+  - ${{ inputs.name }}
+  - '-b'
+  - ${{ inputs.branch }}
+  - '-d'
+  - ${{ inputs.dir }}
+  - '-w'
+  - ${{ inputs.workspace }}
+  - '-t'
+  - ${{ inputs.table_name }}
+  - '-c'
+  - ${{ inputs.connection_string }}
