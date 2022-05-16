@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: tiagoalmeidadarosa/update-static-data-in-azure-table-storage@v1.0.4
+      - uses: tiagoalmeidadarosa/update-static-data-in-azure-table-storage@v1.0.5
         with:
           table_name: ${{ env.TABLE_NAME }}
           connection_string: ${{ secrets.AzureStorageConnectionString }}
