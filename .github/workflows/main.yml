@@ -1,14 +1,27 @@
 name: Upload To Azure Table Storage
 on:
-  push:
-    branches:
-      - main
-      
-  # Allows you to run this workflow manually from the Actions tab
+  workflow_call:
+    inputs:
+      tableName:
+        required: true
+        type: string
+      fileName:
+        required: true
+        type: string
+
   workflow_dispatch:
+    inputs:
+      tableName:
+        required: true
+        description: Table Name
+      fileName:
+        required: true
+        description: File Name
 
 env:
   WORKING_DIR: ./UpdateStaticDataInAzureTableStorage
+  TABLE_NAME: ${{ github.event.inputs.tableName || inputs.tableName }}
+  FILE_NAME: ${{ github.event.inputs.fileName || inputs.fileName }}
   
 jobs:
   upload:
@@ -17,6 +30,6 @@ jobs:
       - uses: actions/checkout@v3
       - uses: tiagoalmeidadarosa/update-static-data-in-azure-table-storage@v1.0.4
         with:
-          table_name: "locationstest"
+          table_name: ${{ env.TABLE_NAME }}
           connection_string: ${{ secrets.AzureStorageConnectionString }}
-          csv_file_path: ${{ env.WORKING_DIR }}/locations.csv
+          csv_file_path: ${{ env.WORKING_DIR }}/${{ env.FILE_NAME }}.csv
