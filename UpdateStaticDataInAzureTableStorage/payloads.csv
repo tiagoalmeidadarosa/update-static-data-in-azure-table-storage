@@ -1,0 +1,2 @@
+PartitionKey,RowKey,Timestamp,CertificateType,CertificateType@type,CountryName,CountryName@type,Key,Key@type,ProgramOwner,ProgramOwner@type,Title,Title@type,Value,Value@type,CertificationType,CertificationType@type
+certification,4C – Common Code for Coffee Community2,2022-03-28T07:18:45.9208553Z,Certification,String,,String,certification,String,4C,String,product,String,4C – Common Code for Coffee Community,String,,

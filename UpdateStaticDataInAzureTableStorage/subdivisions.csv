@@ -1,0 +1,2 @@
+PartitionKey,RowKey,Timestamp,SUCode,SUCode@type,SUCountry,SUCountry@type,SUName,SUName@type
+AD,AD--2(2),2022-03-30T07:30:25.3665408Z,2,String,AD,String,Canillo,String
