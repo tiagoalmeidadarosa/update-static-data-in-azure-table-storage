@@ -16,11 +16,11 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v14.6
         with:
+          separator: ","
           files: |
             *.csv
           files_ignore: |
             *.yml
-          separator: ","
             
       - uses: tiagoalmeidadarosa/update-static-data-in-azure-table-storage@v1.0.7
         with:
