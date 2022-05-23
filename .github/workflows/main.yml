@@ -5,9 +5,6 @@ on:
       - master
     paths:
       - '**.csv'
-
-env:
-  WORKING_DIR: ./UpdateStaticDataInAzureTableStorage
   
 jobs:
   upload:
@@ -24,20 +21,10 @@ jobs:
         with:
           files: |
             *.csv
-
-      - name: List all changed files
-        run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            ${{
-            - uses: bhowell2/github-substring-action
-              id: substring-action
-              with:
-                value: $file
-                length_from_end: 4
-            - uses: tiagoalmeidadarosa/update-static-data-in-azure-table-storage@v1.0.5
-              with:
-                table_name: ${{ steps.substring-action.outputs.substring }}
-                connection_string: ${{ secrets.AzureStorageConnectionString }}
-                csv_file_path: ${{ env.WORKING_DIR }}/${{ steps.substring-action.outputs.substring }}.csv
-            }}
-          done
+          files_ignore: |
+            *.yml
+            
+      - uses: tiagoalmeidadarosa/update-static-data-in-azure-table-storage@v1.0.6
+        with:
+          connection_string: ${{ secrets.AzureStorageConnectionString }}
+          csv_file_paths: ${{ steps.changed-files.outputs.all_changed_files }}
