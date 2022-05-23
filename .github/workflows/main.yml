@@ -12,9 +12,6 @@ jobs:
     name: Test changed-files
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
-
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v14.6
@@ -23,8 +20,9 @@ jobs:
             *.csv
           files_ignore: |
             *.yml
+          separator: ","
             
-      - uses: tiagoalmeidadarosa/update-static-data-in-azure-table-storage@v1.0.6
+      - uses: tiagoalmeidadarosa/update-static-data-in-azure-table-storage@v1.0.7
         with:
           connection_string: ${{ secrets.AzureStorageConnectionString }}
-          csv_file_paths: ${{ steps.changed-files.outputs.all_changed_files }}
+          csv_file_paths: ${{ steps.changed-files.outputs.modified_files }}
