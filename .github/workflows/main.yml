@@ -2,7 +2,7 @@ name: Upload Data To Azure Table Storage
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - '**.csv'
 
