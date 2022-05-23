@@ -1,35 +1,41 @@
-name: Upload To Azure Table Storage
+name: Upload Data To Azure Table Storage
 on:
-  workflow_call:
-    inputs:
-      tableName:
-        required: true
-        type: string
-      fileName:
-        required: true
-        type: string
-
-  workflow_dispatch:
-    inputs:
-      tableName:
-        required: true
-        description: Table Name
-      fileName:
-        required: true
-        description: File Name
+  push:
+    branches:
+      - main
+    paths:
+      - '**.csv'
 
 env:
   WORKING_DIR: ./UpdateStaticDataInAzureTableStorage
-  TABLE_NAME: ${{ github.event.inputs.tableName || inputs.tableName }}
-  FILE_NAME: ${{ github.event.inputs.fileName || inputs.fileName }}
   
 jobs:
   upload:
     runs-on: ubuntu-latest
+    name: Test changed-files
     steps:
       - uses: actions/checkout@v3
-      - uses: tiagoalmeidadarosa/update-static-data-in-azure-table-storage@v1.0.5
         with:
-          table_name: ${{ env.TABLE_NAME }}
-          connection_string: ${{ secrets.AzureStorageConnectionString }}
-          csv_file_path: ${{ env.WORKING_DIR }}/${{ env.FILE_NAME }}.csv
+          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v14.6
+        with:
+          files: |
+            *.csv
+
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            - uses: bhowell2/github-substring-action
+              id: substring-action
+              with:
+                value: file
+                length_from_end: 4
+            - uses: tiagoalmeidadarosa/update-static-data-in-azure-table-storage@v1.0.5
+              with:
+                table_name: ${{ steps.substring-action.outputs.substring }}
+                connection_string: ${{ secrets.AzureStorageConnectionString }}
+                csv_file_path: ${{ env.WORKING_DIR }}/${{ steps.substring-action.outputs.substring }}.csv
+          done
