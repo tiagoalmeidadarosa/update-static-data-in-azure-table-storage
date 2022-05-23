@@ -27,7 +27,7 @@ static async Task StartAnalysisAsync(ActionInputs inputs, IHost host)
 
     Console.WriteLine(inputs.CsvFilePaths);
 
-    foreach (var csvFilePath in inputs.CsvFilePaths.Split(" "))
+    foreach (var csvFilePath in inputs.CsvFilePaths.Split(","))
     {
         var tableName = Path.GetFileNameWithoutExtension(csvFilePath);
 
