@@ -23,50 +23,57 @@ await host.RunAsync();
 static async Task StartAnalysisAsync(ActionInputs inputs, IHost host)
 {
     var cloudStorageAccount = CloudStorageAccount.Parse(inputs.ConnectionString);
-
     var tableClient = cloudStorageAccount.CreateCloudTableClient();
-    var table = tableClient.GetTableReference(inputs.TableName);
-    await table.CreateIfNotExistsAsync();
 
-    using (var reader = new StreamReader(inputs.CsvFilePath))
-    using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+    Console.WriteLine(inputs.CsvFilePaths);
+
+    foreach (var csvFilePath in inputs.CsvFilePaths.Split(" "))
     {
-        MissingFieldFound = null,
-        HeaderValidated = null,
-        Delimiter = ",",
-        DetectDelimiter = false,
-        HasHeaderRecord = true,
-        TrimOptions = TrimOptions.Trim,
-    }))
-    {
-        switch (inputs.TableName)
+        var tableName = Path.GetFileNameWithoutExtension(csvFilePath);
+
+        var table = tableClient.GetTableReference(tableName);
+        await table.CreateIfNotExistsAsync();
+
+        using (var reader = new StreamReader(csvFilePath))
+        using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            case "locations":
-                var locationRecords = csv.GetRecords<LocationsEntity>()
-                    .GroupBy(r => r.PartitionKey)
-                    .ToList();
+            MissingFieldFound = null,
+            HeaderValidated = null,
+            Delimiter = ",",
+            DetectDelimiter = false,
+            HasHeaderRecord = true,
+            TrimOptions = TrimOptions.Trim,
+        }))
+        {
+            switch (tableName)
+            {
+                case "locations":
+                    var locationRecords = csv.GetRecords<LocationsEntity>()
+                        .GroupBy(r => r.PartitionKey)
+                        .ToList();
 
-                await ExecuteBatchAsync(table, locationRecords);
-                break;
+                    await ExecuteBatchAsync(table, locationRecords);
+                    break;
 
-            case "payloads":
-                var payloadRecords = csv.GetRecords<PayloadsEntity>()
-                    .GroupBy(r => r.PartitionKey)
-                    .ToList();
+                case "payloads":
+                    var payloadRecords = csv.GetRecords<PayloadsEntity>()
+                        .GroupBy(r => r.PartitionKey)
+                        .ToList();
 
-                await ExecuteBatchAsync(table, payloadRecords);
-                break;
+                    await ExecuteBatchAsync(table, payloadRecords);
+                    break;
 
-            case "subdivisions":
-                var subdivisionsRecords = csv.GetRecords<SubdivisionsEntity>()
-                    .GroupBy(r => r.PartitionKey)
-                    .ToList();
+                case "subdivisions":
+                    var subdivisionsRecords = csv.GetRecords<SubdivisionsEntity>()
+                        .GroupBy(r => r.PartitionKey)
+                        .ToList();
 
-                await ExecuteBatchAsync(table, subdivisionsRecords);
-                break;
+                    await ExecuteBatchAsync(table, subdivisionsRecords);
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
         }
     }
 

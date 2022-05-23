@@ -4,22 +4,17 @@ branding:
   icon: upload
   color: blue
 inputs:
-  table_name:
-    description: "The name of the table to insert into."
-    required: true
   connection_string:
     description: "The connection string for the storage account."
     required: true
-  csv_file_path:
-    description: "The csv file path for import."
+  csv_file_paths:
+    description: "The csv file paths for import."
     required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-  - '-t'
-  - ${{ inputs.table_name }}
   - '-c'
   - ${{ inputs.connection_string }}
   - '-p'
-  - ${{ inputs.csv_file_path }}
+  - ${{ inputs.csv_file_paths }}
