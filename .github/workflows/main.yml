@@ -25,7 +25,7 @@ jobs:
           files_ignore: |
             *.yml
             
-      - uses: tiagoalmeidadarosa/update-static-data-in-azure-table-storage@v1.0.7
+      - uses: tiagoalmeidadarosa/update-static-data-in-azure-table-storage@v1.0.8
         with:
           connection_string: ${{ secrets.AzureStorageConnectionString }}
           csv_file_paths: ${{ steps.changed-files.outputs.modified_files }}
