@@ -22,8 +22,6 @@ jobs:
           separator: ","
           files: |
             *.csv
-          files_ignore: |
-            *.yml
             
       - uses: tiagoalmeidadarosa/update-static-data-in-azure-table-storage@v1.0.8
         with:
